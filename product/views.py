@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from product.models import Car, Favorite
-
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
 
 def product(request):
     return render(request, 'product.html')
@@ -42,3 +43,20 @@ def add_to_favorites(request, car_id):
         Favorite.objects.create(car=car)
 
     return redirect('next_to_page')
+
+
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+
+        User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+
+        return redirect('next_to_page')
+
+    return render(request, 'register.html')
